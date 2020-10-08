@@ -47,7 +47,7 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         script: | 
           cd /var/www/huebanden.dk/
-          composer install
-          php artisan migrate
+          composer install --no-dev
+          php artisan migrate --force
           php artisan optimize:clear
           
