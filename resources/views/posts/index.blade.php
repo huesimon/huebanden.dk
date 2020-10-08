@@ -10,6 +10,7 @@
 
 <body>
     Welcome to posts
+    {{ $posts }}
 </body>
 
 </html>
