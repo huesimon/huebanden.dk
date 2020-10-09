@@ -1,7 +1,7 @@
 FROM php:7.4-fpm AS base
 
 # PHP SQL DRIVER 
-RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+RUN docker-php-ext-install mysqli pdo pdo_mysql mcrypt mbstring && docker-php-ext-enable pdo_mysql
 
 WORKDIR /app
 
