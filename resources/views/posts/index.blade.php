@@ -23,7 +23,7 @@
                     <p>
                         {{ $post->body }}
                     </p>
-                    <a class="btn btn-primary" href="#">View Project</a>
+                    <a class="btn btn-primary" href="{{ route('posts.show', $post) }}">View Project</a>
                 </div>
             </div>
             <!-- /.row -->
