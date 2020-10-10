@@ -41,6 +41,17 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
+                    <!-- Center Of Navbar -->
+                    <ul class="navbar-nav mr-center">
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('posts.index') }}">{{ __('View Posts') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('posts.create') }}">{{ __('Create Post') }}</a>
+                            </li>
+                        @endauth
+                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -64,7 +75,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                                     document.getElementById('logout-form').submit();">
+                                                                                                                                                         document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
