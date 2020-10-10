@@ -1,26 +1,46 @@
-FROM php:7.4-fpm AS base
+FROM php:7.4-fpm
 
-# PHP SQL DRIVER 
-RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+COPY composer.lock composer.json package.json /usr/src/app/
 
-WORKDIR /app
+ENV DOCKERIZE_VERSION 0.6.1
 
-FROM base AS dev
+# Install dockerize so we can wait for containers to be ready
+RUN curl -s -f -L -o /tmp/dockerize.tar.gz https://github.com/jwilder/dockerize/releases/download/v$DOCKERIZE_VERSION/dockerize-linux-amd64-v$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf /tmp/dockerize.tar.gz \
+    && rm /tmp/dockerize.tar.gz
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+# Install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
 
-###
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    git \
+    vim \
+    libmemcached-dev \
+    libz-dev \
+    libpq-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libfreetype6-dev \
+    libssl-dev \
+    libmcrypt-dev \
+    libzip-dev \
+    unzip \
+    zip \
+    nodejs \
+    && docker-php-ext-configure gd \
+    && docker-php-ext-configure zip \
+    && docker-php-ext-install \
+    gd \
+    exif \
+    opcache \
+    pdo_mysql \
+    pdo_pgsql \
+    pcntl \
+    zip \
+    && rm -rf /var/lib/apt/lists/*;
 
-FROM dev AS build
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY composer.json composer.json
-
-RUN composer install
-
-COPY . /app
-
-###
-
-FROM base AS production
-
-COPY --from=build /app /var/www/html
+COPY ./laravel.ini /usr/local/etc/php/conf.d/laravel.ini
