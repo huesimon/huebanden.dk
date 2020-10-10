@@ -23,7 +23,10 @@
                     <p>
                         {{ $post->body }}
                     </p>
-                    <a class="btn btn-primary" href="{{ route('posts.show', $post) }}">View Project</a>
+                    <a class="btn btn-primary" href="{{ route('posts.show', $post) }}">View Post</a>
+                    @can('update', $post)
+                        <a class="btn btn-secondary" href="{{ route('posts.edit', $post) }}">Edit Post</a>
+                    @endcan
                 </div>
             </div>
             <!-- /.row -->
