@@ -19,3 +19,16 @@ Install docker https://www.docker.com/products/docker-desktop
 [huesimon](https://github.com/huesimon)
 
 [AndreasPB](https://github.com/andreaspb)
+
+
+Kode i MD
+
+```
+class PostController extends Controller
+{
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class);
+    }
+}
+```
