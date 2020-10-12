@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreComment;
@@ -42,14 +43,8 @@ class CommentController extends Controller
         // Validate the comment using the StoreComment request class
         $validated = $request->validated();
 
-        // Fill data
-        $comment = new Comment;
-        $comment->fill($validated);
-        $comment->user_id = Auth::user()->id;
-
-        // Store the comment
-        $comment->save();
-   
+        $comment = Comment::factory($validated)->create();
+        
         // Redirect back
         Session::flash('message', 'Comment posted');
 
