@@ -42,7 +42,6 @@ class CommentController extends Controller
         // Validate the post using the StorePost class
         $validated = $request->validated();
 
-        // dd($validated);
         // Fill data
         $comment = new Comment;
         $comment->fill($validated);
