@@ -36,7 +36,6 @@
                         <input type="hidden" name="post_id" value="{{ $post->id }}">
                     </div>
                     <div class="col-md-3">
-                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
                         <button type="submit" class="btn btn-primary">Post</button>
                     </div>
                 </div>

@@ -16,7 +16,7 @@ class StoreComment extends FormRequest
     public function authorize()
     {
         // Make sure the user that was trying to create the comment is the same as auth user
-        return request('user_id') == Auth::id();
+        return true;
     }
 
     /**
@@ -29,7 +29,6 @@ class StoreComment extends FormRequest
         return [
             'text' => 'required|max:255',
             'post_id' => 'exists:App\Models\Post,id',
-            'user_id' => 'exists:App\Models\User,id',
         ];
     }
 }

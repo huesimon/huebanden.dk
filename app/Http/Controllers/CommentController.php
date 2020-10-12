@@ -43,7 +43,7 @@ class CommentController extends Controller
         // Validate the comment using the StoreComment request class
         $validated = $request->validated();
 
-        $comment = Comment::factory($validated)->create();
+        $comment = Auth::user()->createComment(new Comment($validated));
         
         // Redirect back
         Session::flash('message', 'Comment posted');
