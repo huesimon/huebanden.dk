@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreComment;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class CommentController extends Controller
 {
@@ -33,9 +37,24 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreComment $request)
     {
-        //
+        // Validate the post using the StorePost class
+        $validated = $request->validated();
+
+        // dd($validated);
+        // Fill data
+        $comment = new Comment;
+        $comment->fill($validated);
+        $comment->user_id = Auth::user()->id;
+
+        // Store the post
+        $comment->save();
+   
+        // Redirect back
+        Session::flash('message', 'Comment posted');
+
+        return Redirect::to(route('posts.show', $comment->post));
     }
 
     /**
