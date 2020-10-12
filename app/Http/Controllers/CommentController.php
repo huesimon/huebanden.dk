@@ -39,7 +39,7 @@ class CommentController extends Controller
      */
     public function store(StoreComment $request)
     {
-        // Validate the post using the StoreComment request class
+        // Validate the comment using the StoreComment request class
         $validated = $request->validated();
 
         // Fill data
@@ -47,7 +47,7 @@ class CommentController extends Controller
         $comment->fill($validated);
         $comment->user_id = Auth::user()->id;
 
-        // Store the post
+        // Store the comment
         $comment->save();
    
         // Redirect back
