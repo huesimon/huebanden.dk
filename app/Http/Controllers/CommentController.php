@@ -39,7 +39,7 @@ class CommentController extends Controller
      */
     public function store(StoreComment $request)
     {
-        // Validate the post using the StorePost class
+        // Validate the post using the StoreComment request class
         $validated = $request->validated();
 
         // Fill data
