@@ -2,6 +2,9 @@
 
 ## Getting started
 
+### Env 
+* Set up the .env file first, since both Docker and Laravel will be using values from this file.
+
 ### Docker
 
 Install docker https://www.docker.com/products/docker-desktop
@@ -10,9 +13,13 @@ Install docker https://www.docker.com/products/docker-desktop
 
 `docker-compose up`
 
-#### Database
+### Laravel init
 
-`docker exec -it php php artisan migrate `
+`docker exec -it app composer install ` // App contianer might not have composer (try it out)
+
+`docker exec -it app npm run dev ` // App contianer might not have npm (try it out)
+
+`docker exec -it app php artisan migrate `
 
 ## Collaborators
 
@@ -21,14 +28,3 @@ Install docker https://www.docker.com/products/docker-desktop
 [AndreasPB](https://github.com/andreaspb)
 
 
-Kode i MD
-
-```
-class PostController extends Controller
-{
-    public function __construct()
-    {
-        $this->authorizeResource(Post::class);
-    }
-}
-```
