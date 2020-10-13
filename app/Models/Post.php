@@ -21,6 +21,11 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function photos()
+    {
+        return $this->belongsToMany(Photo::class, 'post_photos');
+    }
     
     public function scopeIdDesc($query)
     {
