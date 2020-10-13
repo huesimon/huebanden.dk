@@ -2,20 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Post;
 use App\Models\Photo;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
+use App\Models\PostPhoto;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PhotoFactory extends Factory
+class PostPhotoFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Photo::class;
+    protected $model = PostPhoto::class;
 
     /**
      * Define the model's default state.
@@ -24,11 +23,9 @@ class PhotoFactory extends Factory
      */
     public function definition()
     {
-        $image = $this->faker->image();
-        // $imageFile = new File($image);
         return [
-            'user_id' => User::factory(),
-            'path' => Storage::putFile('photos', new File($image)),
+            'post_id' => Post::factory(),
+            'photo_id' => Photo::factory()
         ];
     }
 }
