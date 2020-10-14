@@ -12,7 +12,7 @@
         <!-- Project One -->
         <div class="row">
             <div class="col-md-12">
-                <form method="POST" action="{{ route('posts.store') }}">
+                <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="title">Title</label>
@@ -22,6 +22,10 @@
                     <div class="form-group">
                         <label for="body">Body</label>
                         <textarea type="text" class="form-control" id="body" name="body" placeholder="Body"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="photo">File</label>
+                        <input type="file" class="form-control-file" name="photo" id="photo">
                     </div>
                     <button type="submit" class="btn btn-primary">Create</button>
                 </form>

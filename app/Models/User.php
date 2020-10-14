@@ -47,6 +47,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function createPost(Post $post)
+    {
+        return $this->posts()->save($post);
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
@@ -55,5 +60,15 @@ class User extends Authenticatable
     public function createComment(Comment $comment)
     {
         return $this->comments()->save($comment);
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
+    public function createPhoto(Photo $photo)
+    {
+        return $this->posts()->save($photo);
     }
 }

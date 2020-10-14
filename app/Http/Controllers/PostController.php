@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use Illuminate\Http\File;
 use App\Http\Requests\StorePost;
 use App\Http\Requests\UpdatePost;
+use App\Models\Photo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 
 class PostController extends Controller
@@ -48,15 +50,29 @@ class PostController extends Controller
     {
         // Validate the post using the StorePost class
         $validated = $request->validated();
-
-        // Fill data
-        $post = new Post;
-        $post->fill($validated);
-        $post->user_id = Auth::user()->id;
         
+        $post = Auth::user()->createPost(new Post($validated));
         // Store the post
         $post->save();
 
+        // TODO:: REFACTOR THIS WHEN YOU KNOW HOW TO DO THIS PROPERLY
+        // Photo Validation
+        $photoValidated = $request->validate([
+            'photo' => 'nullable|file'
+        ]);
+        
+        if ($photoValidated) {
+            $path = Storage::putFile('photos', $photoValidated['photo']);
+        
+            $photo = Auth::user()->createPhoto(new Photo([
+                'path' => $path,
+            ]));
+        
+            $post->photos()->attach($photo);
+        }
+
+        // TODO:: REFACTOR THIS PREVIOUS PART WHEN YOU KNOW HOW TO!
+        
         // Redirect back
         Session::flash('message', 'Post created');
         return Redirect::to('posts');
