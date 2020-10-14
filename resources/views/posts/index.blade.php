@@ -15,7 +15,12 @@
             <div class="row">
                 <div class="col-md-7">
                     <a href="#">
-                        <img class="img-fluid rounded mb-3 mb-md-0" src="https://placehold.it/700x300" alt="">
+                        @if ($post->photos->isEmpty())
+                            <img class="img-fluid rounded mb-3 mb-md-0" src="https://placehold.it/700x300" alt="">
+                        @else
+                            <img class="img-fluid rounded mb-3 mb-md-0" src="{{ $post->photos->first()->path }}" alt="">
+                        @endif
+
                     </a>
                 </div>
                 <div class="col-md-5">
