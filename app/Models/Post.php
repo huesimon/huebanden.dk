@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
@@ -24,7 +24,7 @@ class Post extends Model
 
     public function photos()
     {
-        return $this->belongsToMany(Photo::class, 'post_photos');
+        return $this->belongsToMany(Photo::class);
     }
     
     public function scopeIdDesc($query)
