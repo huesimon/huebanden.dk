@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-7">
                 @foreach ($post->photos as $photo)
-                    <img src="{{ asset($photo->path) }}">
+                    <img style="width: 100%!important;" src="{{ asset($photo->path) }}">
                 @endforeach
             </div>
             <div class="col-md-5">
@@ -31,11 +31,11 @@
             @csrf
             <div class="form-group">
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-sm-9">
                         <textarea type="text" class="form-control" id="text" name="text" placeholder="Comment"></textarea>
                         <input type="hidden" name="post_id" value="{{ $post->id }}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-sm-3">
                         <button type="submit" class="btn btn-primary">Post</button>
                     </div>
                 </div>
