@@ -16,14 +16,25 @@
                     @csrf
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp"
-                            placeholder="Enter title">
+                        <input type="text" class="form-control  @error('title') is-invalid @enderror" id="title"
+                            name="title" value="{{ old('title') }}">
+                        @error('title')
+                        <span class=" invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="body">Body</label>
-                        <textarea type="text" class="form-control" id="body" name="body" placeholder="Body"></textarea>
+                        <textarea type="text" class="form-control @error('body') is-invalid @enderror" id="body" name="body"
+                            value="{{ old('body') }}"></textarea>
+                        @error('body')
+                        <span class=" invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
-                    <div class="form-group">
+                    <div class=" form-group">
                         <label for="photo">File</label>
                         <input type="file" class="form-control-file" name="photo" id="photo">
                     </div>

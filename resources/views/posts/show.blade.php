@@ -13,7 +13,11 @@
         <div class="row">
             <div class="col-md-7">
                 @foreach ($post->photos as $photo)
+                    @if (!$loop->first)
+                        <hr>
+                    @endif
                     <img style="width: 100%!important;" src="{{ asset($photo->path) }}">
+
                 @endforeach
             </div>
             <div class="col-md-5">

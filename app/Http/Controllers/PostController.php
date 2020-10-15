@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Photo;
 use Illuminate\Http\File;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
 use App\Http\Requests\UpdatePost;
-use App\Models\Photo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -57,20 +58,7 @@ class PostController extends Controller
 
         // TODO:: REFACTOR THIS WHEN YOU KNOW HOW TO DO THIS PROPERLY
         // Photo Validation
-        $photoValidated = $request->validate([
-            'photo' => 'nullable|file'
-        ]);
-        
-        if ($photoValidated) {
-            $path = Storage::putFile('photos', $photoValidated['photo']);
-        
-            $photo = Auth::user()->createPhoto(new Photo([
-                'path' => $path,
-            ]));
-        
-            $post->photos()->attach($photo);
-        }
-
+        $this->savePhoto($request, $post);
         // TODO:: REFACTOR THIS PREVIOUS PART WHEN YOU KNOW HOW TO!
         
         // Redirect back
@@ -116,6 +104,13 @@ class PostController extends Controller
         
         $validated = $request->validated();
         $post->fill($validated);
+
+        // TODO:: REFACTOR THIS WHEN YOU KNOW HOW TO DO THIS PROPERLY
+        // Photo Validation
+        $this->savePhoto($request, $post);
+
+        // TODO:: REFACTOR THIS PREVIOUS PART WHEN YOU KNOW HOW TO!
+
         // Store the post
         $post->save();
  
@@ -133,5 +128,22 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function savePhoto(Request $request, Post $post)
+    {
+        $photoValidated = $request->validate([
+            'photo' => 'nullable|file'
+        ]);
+
+        if ($photoValidated) {
+            $path = Storage::putFile('photos', $photoValidated['photo']);
+        
+            $photo = Auth::user()->createPhoto(new Photo([
+                'path' => $path,
+            ]));
+        
+            $post->photos()->attach($photo);
+        }
     }
 }

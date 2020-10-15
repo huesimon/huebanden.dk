@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PhotoController extends Controller
 {
@@ -80,6 +81,10 @@ class PhotoController extends Controller
      */
     public function destroy(Photo $photo)
     {
-        //
+        $photo->posts()->detach();
+        $photo->delete();
+        Session::flash('message', 'Photo was deleted');
+        
+        return back();
     }
 }
