@@ -31,4 +31,9 @@ class Post extends Model
     {
         return $query->orderBy('id', 'DESC');
     }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }
