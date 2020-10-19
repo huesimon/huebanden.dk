@@ -33,6 +33,36 @@
             @can('update', $post)
             <a class="btn btn-secondary" href="{{ route('posts.edit', $post) }}">Edit Post</a>
             @endcan
+            @if (Auth::user()->hasLikedPost($post))
+            <form action="{{ route('likes.destroy', Auth::user()->hasLikedPost($post))}}" method="post">
+                @csrf
+                <input type="hidden" name="post_id" value="{{ $post->id }}">
+                <button type="submit" class="btn btn-outline-danger">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                    </svg>
+                    <span class="badge badge-light">{{ $post->likes->count() }}</span>
+                    <span class="sr-only">Like</span>
+                </button>
+            </form>
+            @else
+            <form action="{{ route('likes.store')}}" method="post">
+                @csrf
+                <input type="hidden" name="post_id" value="{{ $post->id }}">
+                <button type="submit" class="btn btn-outline-danger">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="grey"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                    </svg>
+                    <span class="badge badge-light">{{ $post->likes->count() }}</span>
+                    <span class="sr-only">Like</span>
+                </button>
+            </form>
+            @endif
+
         </div>
     </div>
     <!-- /.row -->

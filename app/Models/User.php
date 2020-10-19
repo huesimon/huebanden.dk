@@ -76,4 +76,41 @@ class User extends Authenticatable
     {
         return $this->hasMany(Like::class);
     }
+
+    /**
+     * Create a like for a post.
+     * Only create a like if the user hasn't liked the post before.
+     * TODO:: Make this better
+     * @param Like $newLike
+     *
+     * @return bool||Like
+     */
+    public function createLike(Like $newLike)
+    {
+        $foundLike = $this->hasLike($newLike);
+        if ($foundLike) {
+            return false;
+        }
+        return $this->likes()->save($newLike);
+    }
+
+    public function hasLike(Like $findableLike)
+    {
+        foreach ($this->likes as $like) {
+            if ($like->post == $findableLike->post) {
+                return $findableLike;
+            }
+        }
+        return false;
+    }
+
+    public function hasLikedPost(Post $post)
+    {
+        foreach ($this->likes as $like) {
+            if ($like->post->id == $post->id) {
+                return $post;
+            }
+        }
+        return false;
+    }
 }
