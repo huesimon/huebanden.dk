@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\PhotoController;
-use App\Http\Controllers\PostController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Route::resources([
     'posts' => PostController::class,
     'comments' => CommentController::class,
     'photos' => PhotoController::class,
+    'likes' => LikeController::class,
 ]);
 
 Auth::routes();
