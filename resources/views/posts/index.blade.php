@@ -33,7 +33,7 @@
             @can('update', $post)
             <a class="btn btn-secondary" href="{{ route('posts.edit', $post) }}">Edit Post</a>
             @endcan
-            @if (Auth::user()->hasLikedPost($post))
+            @if (Auth::user() && Auth::user()->hasLikedPost($post))
             <form action="{{ route('likes.destroy', Auth::user()->hasLikedPost($post))}}" method="post">
                 @csrf
                 <input type="hidden" name="post_id" value="{{ $post->id }}">
