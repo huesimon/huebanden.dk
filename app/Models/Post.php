@@ -31,4 +31,18 @@ class Post extends Model
     {
         return $query->orderBy('id', 'DESC');
     }
+    
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function likedByUser(User $user)
+    {
+        //TODO:: Refactor to scope?
+        if (!empty($user->likes->where("post_id", $this->id)->first())) {
+            return true;
+        }
+        return false;
+    }
 }

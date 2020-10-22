@@ -6,32 +6,31 @@
 
     <!-- Page Heading -->
     <h1 class="my-4">Huebanden
-        <small>Posts</small>
+        <small>Liked posts</small>
     </h1>
 
-    @foreach ($posts as $post)
-
+    @foreach ($likes as $like)
     <!-- Project One -->
     <div class="row">
         <div class="col-md-7">
             <a href="#">
-                @if ($post->photos->isEmpty())
+                @if ($like->post->photos->isEmpty())
                 <img class="img-fluid rounded mb-3 mb-md-0" src="https://placehold.it/700x300" alt="">
                 @else
                 <img style="width: 50%!important;" class=" img-fluid rounded mb-3 mb-md-0"
-                    src="{{ $post->photos->first()->path }}" alt="">
+                    src="{{ $like->post->photos->first()->path }}" alt="">
                 @endif
 
             </a>
         </div>
         <div class="col-md-5">
-            <h3>{{ $post->title }}</h3>
+            <h3>{{ $like->post->title }}</h3>
             <p>
-                {{ $post->body }}
+                {{ $like->post->body }}
             </p>
-            <a class="btn btn-primary" href="{{ route('posts.show', $post) }}">View Post</a>
-            @can('update', $post)
-            <a class="btn btn-secondary" href="{{ route('posts.edit', $post) }}">Edit Post</a>
+            <a class="btn btn-primary" href="{{ route('posts.show', $like->post) }}">View Post</a>
+            @can('update', $like->post)
+            <a class="btn btn-secondary" href="{{ route('posts.edit', $like->post) }}">Edit Post</a>
             @endcan
 
             @auth

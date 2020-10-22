@@ -71,4 +71,14 @@ class User extends Authenticatable
     {
         return $this->posts()->save($photo);
     }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function createLike(Like $like)
+    {
+        return $this->likes()->save($like);
+    }
 }
