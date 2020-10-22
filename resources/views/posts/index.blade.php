@@ -35,14 +35,16 @@
             @endcan
 
             @auth
-            <form action="{{ route('likes.store')}}" method="post">
-                @csrf
-                <input type="hidden" name="post_id" value="{{ $post->id }}">
-                <button type="submit" class="btn btn-success"
-                    {{ $post->LikedByUser(Auth::user()) ? "disabled":"true" }}>
-                    LIKE
-                </button>
-            </form>
+            <div class="float-right">
+                <form action="{{ route('likes.store')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="post_id" value="{{ $post->id }}">
+                    <button type="submit" class="btn btn-success"
+                        {{ $post->LikedByUser(Auth::user()) ? "disabled":"true" }}>
+                        Save
+                    </button>
+                </form>
+            </div><br>
             @endauth
 
         </div>
