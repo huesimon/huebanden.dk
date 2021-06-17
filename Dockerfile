@@ -1,27 +1,19 @@
 FROM php:7.4-fpm
 
-COPY composer.lock composer.json package.json /usr/src/app/
+# Copy composer.lock and composer.json
+COPY composer.lock composer.json /var/www/
 
-ENV DOCKERIZE_VERSION 0.6.1
+# Set working directory
+WORKDIR /var/www
 
-# Install dockerize so we can wait for containers to be ready
-RUN curl -s -f -L -o /tmp/dockerize.tar.gz https://github.com/jwilder/dockerize/releases/download/v$DOCKERIZE_VERSION/dockerize-linux-amd64-v$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf /tmp/dockerize.tar.gz \
-    && rm /tmp/dockerize.tar.gz
-
-# Install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    git \
-    vim \
-    libmemcached-dev \
-    libz-dev \
-    libpq-dev \
-    libjpeg-dev \
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
     libpng-dev \
+    libpq-dev \
+    libjpeg62-turbo-dev \
     libfreetype6-dev \
+    locales \ 
     libssl-dev \
     libmcrypt-dev \
     libzip-dev \
@@ -40,7 +32,30 @@ RUN apt-get update \
     zip \
     && rm -rf /var/lib/apt/lists/*;
 
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install extensions
+RUN docker-php-ext-install pdo_mysql zip exif pcntl
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd
+
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY ./laravel.ini /usr/local/etc/php/conf.d/laravel.ini
+# Add user for laravel application
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
+
+# Copy existing application directory contents
+COPY . /var/www
+
+# Copy existing application directory permissions
+COPY --chown=www:www . /var/www
+
+# Change current user to www
+USER www
+
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]

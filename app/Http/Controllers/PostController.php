@@ -50,7 +50,7 @@ class PostController extends Controller
     public function store(StorePost $request)
     {
         // Validate the post using the StorePost class
-        $validated = $request->validated();
+            
         
         $post = Auth::user()->createPost(new Post($validated));
         // Store the post

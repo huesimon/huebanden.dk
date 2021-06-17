@@ -1,52 +1,64 @@
-version: "3.8"
+version: "3"
 services:
+  #PHP Service
   app:
-    container_name: app
     build:
-      context: . # The path of the Dockerfile
-    volumes:
-      - .:/usr/src/app
-    depends_on:
-      - db
-    working_dir: /usr/src/app
+      context: .
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    container_name: app
+    restart: unless-stopped
+    tty: true
     environment:
       SERVICE_NAME: app
-      DB_CONNECTION: mysql
-      DB_DRIVER: mysql
-      DB_HOST: db
-      DB_PORT: 3306
-    networks:
-      - app_network
-
-  nginx:
-    container_name: nginx
-    build:
-      context: ./nginx/. # The path of the Dockerfile
+      SERVICE_TAGS: dev
+    working_dir: /var/www
     volumes:
-      - "./public:/usr/src/app/public"
-    environment:
-      NGINX_FPM_HOST: app
-      NGINX_ROOT: /usr/src/app/public
-    ports:
-      - "8000:80"
-    depends_on:
-      - app
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - app_network
+      - app-network
 
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+
+  #MySQL Service
   db:
-    image: mysql:5
+    image: mysql:5.7.22
     container_name: db
-    restart: always
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3306:3306"
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql/
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
     networks:
-      - app_network
+      - app-network
 
+#Docker Networks
 networks:
-  app_network:
+  app-network:
     driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local
